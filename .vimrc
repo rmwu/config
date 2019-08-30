@@ -6,42 +6,31 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     endif
 call plug#begin('~/.vim/plugged')
 
-" fzf = fuzzy find
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
-" tmux-complete (autocomplete + tmux pane friendly)
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 
 Plug 'airblade/vim-gitgutter'
 
+Plug 'edkolev/tmuxline.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
 call plug#end()
 
-highlight Pmenu ctermbg=gray guibg=gray
+highlight Pmenu ctermbg=gray
 
-" nerdtree
-map <C-n> :NERDTreeToggle<CR>
-"" automatically open with vim
-autocmd vimenter * NERDTree
-"" automatically open if no file provided
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-"" automatically open with directory
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-"" close vim if only nerdtree open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-"" nerdtree close ? for help
-let NERDTreeMinimalUI = 1
-"" nerdtree highlight current line
-let NERDTreeHighlightCursorline = 1
 
-" fzf
-map ; :Files<CR>
-let g:fzf_layout = { 'down': '~30%' }
+"" syntax highlighting
+syntax on
+hi LineNr    ctermfg=red
+hi Function  ctermfg=cyan
+hi Statement ctermfg=211
 
 " code folding
 "" default fold code by indent block (makes sense in Python)
@@ -52,17 +41,11 @@ augroup OpenAllFoldsOnFileOpen
         autocmd!
             autocmd BufRead * normal zR
         augroup END
-
-" generic
 "" unfold using space
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 "" remove stupid folding
 nnoremap U :syntax sync fromstart<cr>:redraw!<cr>
-
-"" syntax highlighting
-syntax on
-highlight LineNr ctermfg=red
 
 "" set to auto read when a file is changed from the outside
 set autoread
@@ -105,7 +88,7 @@ set mat=2
 " Highlight current line
 set cursorline
 hi CursorLine term=None cterm=None ctermbg=238
-hi CursorLineNR cterm=bold ctermfg=red ctermbg=238
+hi CursorLineNR cterm=None ctermfg=red ctermbg=238
 "" Empty line hide ~ symbols
 hi EndOfBuffer ctermbg=Black ctermfg=Black
 
@@ -137,7 +120,7 @@ autocmd BufWritePre * %s/\s\+$//e
 set fillchars=vert:│
 set fillchars+=stl:–
 
-" split bars
+"" split bars
 hi VertSplit    ctermfg=Black  ctermbg=238
 hi StatusLine   ctermfg=Black  ctermbg=Red
 hi StatusLineNC ctermfg=Black  ctermbg=238
@@ -145,4 +128,47 @@ hi StatusLineNC ctermfg=Black  ctermbg=238
 hi TabLineFill ctermfg=238  ctermbg=238
 hi TabLine     ctermfg=Green     ctermbg=238
 hi TabLineSel  ctermfg=Green     ctermbg=Black
+
+" nerdtree
+map <C-n> :NERDTreeToggle<CR>
+"" automatically open with vim
+autocmd vimenter * NERDTree
+"" automatically open if no file provided
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"" automatically open with directory
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+"" close vim if only nerdtree open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"" nerdtree close ? for help
+let NERDTreeMinimalUI = 1
+"" nerdtree highlight current line
+let NERDTreeHighlightCursorline = 1
+
+" fzf
+map ; :Files<CR>
+let g:fzf_layout = { 'down': '~30%' }
+"" feed fzf results from ag, which ignores .gitignore
+let $FZF_DEFAULT_COMMAND='ag -g .'
+
+" tmuxline
+let g:airline_theme='bubblegum'
+let g:tmuxline_powerline_separators = 0
+
+"\'a'    : '#S',
+let g:tmuxline_preset = {
+      \'a'    : '#H',
+      \'b'    : '#(curl icanhazip.com)',
+      \'win'  : '#I #W',
+      \'cwin' : '#I #W',
+      \'x'    : '#(date)',
+      \'z'    : '♥ always ♥'}
+
+let g:tmuxline_separators = {
+    \ 'left' : '',
+    \ 'left_alt': '',
+    \ 'right' : '',
+    \ 'right_alt' : ' ',
+    \ 'space' : ' '}
 
