@@ -1,0 +1,11 @@
+# conda configuration
+# updated 20200212
+# rachel menghua wu
+
+create_default_packages:
+  - pip
+  - numpy
+  - matplotlib
+  - termcolor
+  - tqdm
+  - jupyter
