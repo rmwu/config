@@ -39,9 +39,32 @@ set mouse=n
 
 "" syntax highlighting
 syntax on
-hi LineNr    ctermfg=red
+hi Comment   ctermfg=yellow
+hi String    ctermfg=blue
+hi Number    ctermfg=magenta
+hi Float     ctermfg=magenta
+hi Boolean   ctermfg=magenta
+
 hi Function  ctermfg=cyan
-hi Statement ctermfg=211
+hi Identifier  ctermfg=cyan
+
+hi LineNr    ctermfg=red
+hi Statement ctermfg=red
+hi Conditional ctermfg=red
+hi Repeat ctermfg=red
+hi Label ctermfg=red
+hi Include ctermfg=red
+
+hi PreProc ctermfg=red
+hi Keyword ctermfg=red
+hi Operator ctermfg=red
+hi Type ctermfg=red
+
+hi vimGroup ctermfg=yellow
+
+hi pythonFunction ctermfg=cyan
+hi pythonClass ctermfg=cyan
+hi pythonClassVar ctermfg=green
 
 " code folding
 "" default fold code by indent block (makes sense in Python)
